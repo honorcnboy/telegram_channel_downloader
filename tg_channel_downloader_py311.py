@@ -301,11 +301,24 @@ async def main():
     print('Stopped!')
 
 
-if __name__ == '__main__':
+async def main():
+    global bot, client
+
     bot = TelegramClient('telegram_channel_downloader_bot', api_id, api_hash)
-    bot.start(bot_token=bot_token)
+    await bot.start(bot_token=bot_token)
 
     client = TelegramClient('telegram_channel_downloader', api_id, api_hash)
-    client.start()
+    await client.start()
 
+    bot.add_event_handler(handler)
+    if donwload_all_chat:
+        client.add_event_handler(all_chat_download)
+
+    for i in range(max_num):
+        asyncio.create_task(worker(f'worker-{i}'))
+
+    print('Successfully started (Press Ctrl+C to stop)')
+    await client.run_until_disconnected()
+
+if __name__ == '__main__':
     asyncio.run(main())
