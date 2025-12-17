@@ -2,4 +2,4 @@ telethon>=1.30
 cryptg
 pillow>=10.0.0
 aiohttp>=3.9
-hachoir>=3.1.4
+hachoir>=3.1
